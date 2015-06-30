@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>XML Validation</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="text-muted">XML Validation</h1>
+      </div>
+      <hr/>
+      <div class="row">
+        <h2>Sorry, but it's invalid. :(...</h2>
+        <p>{{ xmlfilename }} doesn't validate.</p>
+      </div>
+      <div class="row">
+        <h3>Why?</h3>
+        <p>{{ error_summary }}</p>
+        <h3>Error Log:</h3>
+        {% for error in error_log %}
+        <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <h2>Other Resources</h2>
+        <ul>
+          <li><a href="http://www.w3schools.com/xml/">XML tutorial</a></li>
+          <li><a href="http://www.w3schools.com/schema/">XML Schema tutorial</a></li>
+          <li><a href="/schema.xsd">Download a copy of the XML schema</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <a href="/">Try another XML file</a>
+      </div>
+    </div>
+  </body>
+</html>
