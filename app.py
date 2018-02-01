@@ -15,7 +15,9 @@ app = Flask(__name__)
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 # These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['xml'])
+app.config['ALLOWED_EXTENSIONS'] = set(['xml','XML'])
+# This is the path to the XML schema used for validation.
+app.config['XML_SCHEMA_PATH'] = '/u/scs_layout/tools/inc/product.xsd'
 
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename):
@@ -25,7 +27,7 @@ def allowed_file(filename):
 def validate_xml_file(xmlfilename):
     try:
         doc = etree.parse(xmlfilename)
-        xsd = etree.parse('/path/to/schema.xsd')
+        xsd = etree.parse(app.config['XML_SCHEMA_PATH'])
 
         xmlschema = etree.XMLSchema(xsd)
         xmlschema.assertValid(doc)
@@ -41,7 +43,7 @@ def validate_xml_file(xmlfilename):
     except etree.DocumentInvalid as e:
         print("%s doesn't validate" % xmlfilename)
         print("INVALID DOCUMENT", e)
-        return render_template('invalid.html', xmlfilename=xmlfilename, error_summary="It does not comply with schema.xsd; the XML schema", error_log=xmlschema.error_log)
+        return render_template('invalid.html', xmlfilename=xmlfilename, error_summary="It does not comply with product.xsd; the XML schema", error_log=xmlschema.error_log)
     except AssertionError as e:
         print("%s doesn't validate" % xmlfilename)
         print("INVALID DOCUMENT", e)
@@ -95,8 +97,7 @@ def uploaded_file(filename):
 
 @app.route('/schema.xsd')
 def xml_schema():
-    return Response(open('/path/to/schema.xsd').read(), mimetype='text/xml')
-
+    return Response(open(app.config['XML_SCHEMA_PATH']).read(), mimetype='text/xml')
 
 if __name__ == '__main__':
     app.run(
