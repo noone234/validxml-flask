@@ -12,14 +12,28 @@ tasks from you to a web app.
 
 This application works, therefore it is in beta status.
 
-**Configuring the XML Validator**
+**Installation**
 
-After cloning this Git repository, search the source code for all
-occurences of "schema.xsd" and "/path/to/schema.xsd".  Replace those with
-your XML schema.
+Clone this Git repository.
 
-Eventually this application will be enhanced to accept a configurable schema
-and give you a single point of change.
+    git clone https://github.com/noone234/validxml.git
+
+Run the following commands.
+
+    cd validxml
+    virtualenv venv
+    . venv/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+
+Above I largely assumed that your server has Python version 2 as provided with
+Red Hat Enterprise Linux.  Adjust for Python version 3 if desired.
+
+**Setup**
+
+Edit "app.py" in your favorite text editor.
+Search for XML_SCHEMA_PATH.
+Change that to your desired .xsd file and path.
 
 **Running the XML Validator**
 
