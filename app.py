@@ -14,17 +14,17 @@ __maintainer__ = "Christopher Wolfe"
 __email__ = "noone234@gmail.com"
 __status__ = "Development"
 
-# Initialize the Flask application
+# Initialize the Flask application.
 app = Flask(__name__)
 
-# This is the path to the upload directory
+# This is the path to the upload directory.
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-# These are the extension that we are accepting to be uploaded
+# These are file extension that we accept to be uploaded.
 app.config['ALLOWED_EXTENSIONS'] = set(['xml','XML'])
 # This is the path to the XML schema used for validation.
 app.config['XML_SCHEMA_PATH'] = '/u/scs_layout/tools/inc/product.xsd'
 
-# For a given file, return whether it's an allowed type or not
+# For a given file, return whether it's an allowed type or not.
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
