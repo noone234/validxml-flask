@@ -1,13 +1,18 @@
-import os
+"""
+This Flask application validates an XML file against a schema.
+"""
 
-# We'll render HTML templates and access data sent by POST
-# using the request object from flask. Redirect and url_for
-# will be used to redirect the user once the upload is done
-# and send_from_directory will help us to send/show on the
-# browser the file that the user just uploaded
+import os
 from flask import Flask, render_template, request, Response, send_from_directory
 from werkzeug import secure_filename
 from lxml import etree
+
+__author__ = "Christopher Wolfe"
+__copyright__ = "Copyright 2018, Christopher Wolfe"
+__license__ = "MIT"
+__maintainer__ = "Christopher Wolfe"
+__email__ = "noone234@gmail.com"
+__status__ = "Development"
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -50,11 +55,9 @@ def validate_xml_file(xmlfilename):
         return render_template('invalid.html', xmlfilename=xmlfilename, error_summary='Invalid Document', error_log=xmlschema.error_log)
 
 
-# This route will show a form to perform an AJAX request
-# jQuery is loaded to execute the request and update the
-# value of the operation
 @app.route('/')
 def index():
+    # Prompt the user to upload an XML file.
     return render_template('index.html')
 
 
@@ -65,31 +68,29 @@ def upload():
     file = request.files['file']
 
     # Check if the file is one of the allowed types/extensions
-    if file:
-        if allowed_file(file.filename):
+    if not file:
+        return render_template('nofile.html')
+    elif file.filename == '':
+        return render_template('nofile.html')
+    elif not allowed_file(file.filename):
+        return render_template('badfiletype.html')
+    else:
+        # Make the filename safe, remove unsupported chars
+        filename = secure_filename(file.filename)
 
-            # Make the filename safe, remove unsupported chars
-            filename = secure_filename(file.filename)
+        # Move the file from the temporal folder to
+        # the upload folder we setup
+        saved_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(saved_filename)
 
-            # Move the file from the temporal folder to
-            # the upload folder we setup
-            saved_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(saved_filename)
-
-            # Validate the file.
-            return validate_xml_file(saved_filename)
-
-        elif file.filename == '':
-            return render_template('nofile.html')
-
-        else:
-            return render_template('badfiletype.html')
+        # Validate the file.
+        return validate_xml_file(saved_filename)
 
 
-# This route is expecting a parameter containing the name
-# of a file. Then it will locate that file on the upload
-# directory and show it on the browser, so if the user uploads
-# an image, that image is going to be show after the upload
+# This route expects a parameter containing the name of a file.
+# Then it will locate that file in the upload directory
+# and show it on the browser.  So if the user uploads
+# an image, that image can be shown after the upload.
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
@@ -102,7 +103,7 @@ def xml_schema():
 if __name__ == '__main__':
     app.run(
         host="0.0.0.0",
-        port=int("5000"),
+        port=5000,
         debug=True
     )
 
