@@ -1,6 +1,6 @@
 # validxml
 
-Validates an XML file against a Schema using Python and Flask.
+Validates an XML file against a schema using Python and Flask.
 
 This app assumes that you have an XML schema which other people, companies,
 or organizations want to comply with.  The app helps them confirm that their
