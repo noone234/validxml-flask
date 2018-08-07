@@ -21,24 +21,31 @@ Clone this Git repository.
 Run the following commands.
 
     cd validxml
+    python3 -m venv env
+    . env/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+
+Above I largely assumed that your server has Python version 3.
+If you have Python version 2,
+run the following commands instead.
+
+    cd validxml
     virtualenv venv
     . venv/bin/activate
     pip install --upgrade pip
     pip install -r requirements.txt
 
-Above I largely assumed that your server has Python version 2 as provided with
-Red Hat Enterprise Linux.  Adjust for Python version 3 if desired.
-
 **Setup**
 
-Edit "app.py" in your favorite text editor.
+Edit "app/__init__.py" in your favorite text editor.
 Search for XML_SCHEMA_PATH.
 Change that to your desired .xsd file and path.
 
 **Running the XML Validator**
 
-In the "validxml" directory, run "python app.py".  Flask will then start
-listening on port 5000 for requests.
+In the "validxml" directory, run "python manage.py".
+Flask will then start listening on port 5000 for requests.
 
 People may direct their web browser to your server's port 5000, e.g.
 
