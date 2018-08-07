@@ -1,4 +1,4 @@
-""" app.py
+""" app/__init.py__
 
 This Flask application validates an XML file against a schema.
 """
