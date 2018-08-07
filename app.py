@@ -1,11 +1,9 @@
-"""
+""" app.py
+
 This Flask application validates an XML file against a schema.
 """
 
-import os
-from flask import Flask, render_template, request, Response, send_from_directory
-from werkzeug import secure_filename
-from lxml import etree
+from __future__ import print_function
 
 __author__ = "Christopher Wolfe"
 __copyright__ = "Copyright 2018, Christopher Wolfe"
@@ -13,6 +11,11 @@ __license__ = "MIT"
 __maintainer__ = "Christopher Wolfe"
 __email__ = "noone234@gmail.com"
 __status__ = "Development"
+
+import os
+from flask import Flask, render_template, request, Response, send_from_directory
+from werkzeug import secure_filename
+from lxml import etree
 
 # Initialize the Flask application.
 app = Flask(__name__)
