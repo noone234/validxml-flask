@@ -14,7 +14,7 @@ __status__ = "Beta"
 
 import os
 from flask import Flask, render_template, request, Response, send_from_directory
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from lxml import etree
 
 
