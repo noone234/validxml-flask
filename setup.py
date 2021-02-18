@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ValidXML',
-    version='1.0',
+    version='1.1.0',
     description='Validate an XML file against a schema using Flask',
     author='Christopher Wolfe',
     author_email='noone234@gmail.com',
