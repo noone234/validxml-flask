@@ -7,7 +7,7 @@ __copyright__ = "Copyright 2018, Christopher Wolfe"
 __license__ = "MIT"
 __maintainer__ = "Christopher Wolfe"
 __email__ = "noone234@gmail.com"
-__status__ = "Development"
+__status__ = "Beta"
 
 from app import create_app
 
