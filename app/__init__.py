@@ -17,6 +17,7 @@ from flask import Flask, render_template, request, Response, send_from_directory
 from werkzeug import secure_filename
 from lxml import etree
 
+
 def create_app():
     # Initialize the Flask application.
     app = Flask(__name__)
@@ -24,7 +25,7 @@ def create_app():
     # This is the path to the upload directory.
     app.config['UPLOAD_FOLDER'] = 'uploads/'
     # These are file extension that we accept to be uploaded.
-    app.config['ALLOWED_EXTENSIONS'] = set(['xml','XML'])
+    app.config['ALLOWED_EXTENSIONS'] = set(['xml', 'XML'])
     # This is the path to the XML schema used for validation.
     app.config['XML_SCHEMA_PATH'] = '/u/scs_layout/tools/inc/product.xsd'
 
@@ -40,7 +41,7 @@ def create_app():
 
             xmlschema = etree.XMLSchema(xsd)
             xmlschema.assertValid(doc)
-    
+
             print("%s validates" % xmlfilename)
             return render_template('valid.html', xmlfilename=xmlfilename)
 
@@ -48,22 +49,30 @@ def create_app():
         except etree.XMLSyntaxError as e:
             print("%s doesn't validate" % xmlfilename)
             print("PARSING ERROR", e)
-            return render_template('invalid.html', xmlfilename=xmlfilename, error_summary='It is not even valid XML.')
+            return render_template('invalid.html',
+                                   xmlfilename=xmlfilename,
+                                   error_summary='It is not even valid XML.')
         except etree.DocumentInvalid as e:
             print("%s doesn't validate" % xmlfilename)
             print("INVALID DOCUMENT", e)
-            return render_template('invalid.html', xmlfilename=xmlfilename, error_summary="It does not comply with product.xsd; the XML schema", error_log=xmlschema.error_log)
+            return render_template(
+                'invalid.html',
+                xmlfilename=xmlfilename,
+                error_summary=
+                "It does not comply with product.xsd; the XML schema",
+                error_log=xmlschema.error_log)
         except AssertionError as e:
             print("%s doesn't validate" % xmlfilename)
             print("INVALID DOCUMENT", e)
-            return render_template('invalid.html', xmlfilename=xmlfilename, error_summary='Invalid Document', error_log=xmlschema.error_log)
-
+            return render_template('invalid.html',
+                                   xmlfilename=xmlfilename,
+                                   error_summary='Invalid Document',
+                                   error_log=xmlschema.error_log)
 
     @app.route('/')
     def index():
         # Prompt the user to upload an XML file.
         return render_template('index.html')
-
 
     # Route that will process the file upload
     @app.route('/upload', methods=['POST'])
@@ -84,12 +93,12 @@ def create_app():
 
             # Move the file from the temporal folder to
             # the upload folder we setup
-            saved_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            saved_filename = os.path.join(app.config['UPLOAD_FOLDER'],
+                                          filename)
             file.save(saved_filename)
 
             # Validate the file.
             return validate_xml_file(saved_filename)
-
 
     # This route expects a parameter containing the name of a file.
     # Then it will locate that file in the upload directory
@@ -97,11 +106,11 @@ def create_app():
     # an image, that image can be shown after the upload.
     @app.route('/uploads/<filename>')
     def uploaded_file(filename):
-        return send_from_directory(app.config['UPLOAD_FOLDER'],
-                                   filename)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
     @app.route('/schema.xsd')
     def xml_schema():
-        return Response(open(app.config['XML_SCHEMA_PATH']).read(), mimetype='text/xml')
+        return Response(open(app.config['XML_SCHEMA_PATH']).read(),
+                        mimetype='text/xml')
 
     return app

@@ -15,6 +15,7 @@ __status__ = "Development"
 import pytest
 from app import create_app
 
+
 class TestClass:
     @classmethod
     def setup_class(cls):
