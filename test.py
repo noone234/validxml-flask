@@ -3,8 +3,6 @@
 Tests for this fine application.
 """
 
-from __future__ import print_function
-
 __author__ = "Christopher Wolfe"
 __copyright__ = "Copyright 2018, Christopher Wolfe"
 __license__ = "MIT"
